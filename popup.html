@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="popup.css">
+    <title>Precious Time</title>
+  </head>
+  <body>
+    <main>
+      <header>
+        <div class="mark">m</div>
+        <div><h1>Precious Time</h1><p>Time worth protecting</p></div>
+      </header>
+
+      <section id="setup-view">
+        <div class="eyebrow">YOUR PRIVATE RATE</div>
+        <h2>Your time is precious.</h2>
+        <p class="muted">Set your private rate and let the meter mind the minutes.</p>
+        <form id="settings-form">
+          <label>Annual salary <span class="input-wrap"><select id="currency" aria-label="Currency"><option value="EUR">€</option><option value="USD">$</option><option value="GBP">£</option></select><input id="annualSalary" inputmode="decimal" type="number" min="0" step="1000" required></span></label>
+          <div class="two-col">
+            <label>Hours / week<input id="hoursPerWeek" type="number" min="1" max="168" required></label>
+            <label>Weeks / year<input id="weeksPerYear" type="number" min="1" max="52" required></label>
+          </div>
+          <div class="rate-card"><span>Your hourly cost</span><strong id="hourly-rate">€0.00</strong></div>
+          <label>Team code <input id="teamCode" maxlength="24" placeholder="e.g. A7K9Q2"><small>Optional for the local MVP</small></label>
+          <button type="submit">Save private settings</button>
+        </form>
+      </section>
+
+      <section id="ready-view" hidden>
+        <div class="status"><span></span> Ready for Google Meet</div>
+        <h2>Your meter is on</h2>
+        <p class="muted">Join a Google Meet. We’ll keep an eye on the precious minutes.</p>
+        <div class="rate-card"><span>Your private rate</span><strong id="ready-rate">€0.00 / hr</strong></div>
+        <button id="edit-settings" class="secondary">Edit settings</button>
+      </section>
+      <footer><span class="lock">⌁</span> Your salary stays yours, always</footer>
+    </main>
+    <script src="popup.js"></script>
+  </body>
+</html>

@@ -1,0 +1,16 @@
+{
+  "manifest_version": 3,
+  "name": "Precious Time",
+  "version": "0.1.0",
+  "description": "A private, real-time meeting cost meter for Google Meet.",
+  "permissions": ["storage", "tabs"],
+  "host_permissions": ["https://meet.google.com/*"],
+  "action": { "default_title": "Precious Time", "default_popup": "popup.html" },
+  "background": { "service_worker": "service-worker.js", "type": "module" },
+  "content_scripts": [{
+    "matches": ["https://meet.google.com/*"],
+    "js": ["content.js"],
+    "css": ["overlay.css"],
+    "run_at": "document_idle"
+  }]
+}
