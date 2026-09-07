@@ -1,5 +1,5 @@
 (() => {
-  const DEFAULTS = { currency: "EUR", annualSalary: 60000, hoursPerWeek: 40, weeksPerYear: 46, setupComplete: false };
+  const DEFAULTS = { currency: "EUR", annualSalary: 60000, hoursPerWeek: 40, weeksPerYear: 46, displayMode: "milestones", setupComplete: false };
   let settings, startedAt, timer, lastParticipants = 1, lastSavedAt = 0;
   const money = (value) => new Intl.NumberFormat(undefined, { style: "currency", currency: settings.currency, maximumFractionDigits: 2 }).format(value);
   const personalPerMinute = () => settings.annualSalary / (settings.hoursPerWeek * settings.weeksPerYear * 60);
@@ -32,10 +32,24 @@
     const root = document.getElementById("meeting-meter");
     if (!root) return;
     lastParticipants = participantCount();
-    root.querySelector('.mm-time-value').textContent = timeText(duration());
-    root.querySelector('.mm-cost').textContent = money(cost());
+    const seconds = duration();
+    const mode = settings.displayMode;
+    root.querySelector('.mm-time-value').textContent = timeText(seconds);
     root.querySelector('.mm-people').textContent = `${lastParticipants} ${lastParticipants === 1 ? "participant" : "participants"}`;
-    root.querySelector('.mm-rate').textContent = `${money(personalPerMinute() * lastParticipants)} / min`;
+    if (mode === 'live') {
+      root.querySelector('.mm-status').innerHTML = '<i class="mm-live"></i>Precious minutes';
+      root.querySelector('.mm-cost').textContent = money(cost());
+      root.querySelector('.mm-rate').textContent = `${money(personalPerMinute() * lastParticipants)} / min`;
+    } else if (mode === 'milestones') {
+      const milestone = Math.floor(seconds / 600) * 600;
+      root.querySelector('.mm-cost').textContent = milestone ? money(milestone / 60 * personalPerMinute() * lastParticipants) : '—';
+      root.querySelector('.mm-status').innerHTML = `<i class="mm-live"></i>${milestone ? `${milestone / 60}-minute check-in` : 'First check-in at 10 min'}`;
+      root.querySelector('.mm-rate').textContent = milestone ? 'Updates every 10 min' : 'No running total';
+    } else {
+      root.querySelector('.mm-status').innerHTML = '<i class="mm-live"></i>Quietly tracking';
+      root.querySelector('.mm-cost').textContent = '—';
+      root.querySelector('.mm-rate').textContent = 'Total at the end';
+    }
   }
   function mount() {
     if (document.getElementById("meeting-meter")) return;
@@ -49,7 +63,6 @@
     startedAt = Date.now();
     const root = document.getElementById('meeting-meter');
     if (root) {
-      root.querySelector('.mm-status').innerHTML = '<i class="mm-live"></i>Precious minutes';
       root.querySelector('.mm-time').innerHTML = 'Time in meeting <span class="mm-time-value">00:00:00</span>';
     }
   }

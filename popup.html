@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="popup.css">
+    <link rel="stylesheet" href="modes.css">
     <title>Precious Time</title>
   </head>
   <body>
@@ -24,6 +25,14 @@
             <label>Weeks / year<input id="weeksPerYear" type="number" min="1" max="52" required></label>
           </div>
           <div class="rate-card"><span>Your hourly cost</span><strong id="hourly-rate">€0.00</strong></div>
+          <label>During a meeting
+            <select id="displayMode">
+              <option value="milestones">Gentle check-ins (every 10 minutes)</option>
+              <option value="live">Live total</option>
+              <option value="end">Show total when the meeting ends</option>
+            </select>
+            <small>You can change this whenever you like.</small>
+          </label>
           <label>Team code <input id="teamCode" maxlength="24" placeholder="e.g. A7K9Q2"><small>Optional for the local MVP</small></label>
           <button type="submit">Save private settings</button>
         </form>
@@ -34,6 +43,7 @@
         <h2>Your meter is on</h2>
         <p class="muted">Join a Google Meet. We’ll keep an eye on the precious minutes.</p>
         <div class="rate-card"><span>Your private rate</span><strong id="ready-rate">€0.00 / hr</strong></div>
+        <div class="mode-card"><span>During meetings</span><strong id="ready-mode">Gentle check-ins</strong></div>
         <button id="edit-settings" class="secondary">Edit settings</button>
       </section>
       <footer><span class="lock">⌁</span> Your salary stays yours, always</footer>

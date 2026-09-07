@@ -10,6 +10,10 @@ A Manifest V3 Chrome extension for a privacy-first Google Meet cost meter.
 
 When you open `meet.google.com`, a **“Precious Time is ready”** card appears in the top-right; this confirms the extension is installed and configured. When Meet detects that you are in a call, it becomes the live cost meter. When the call ends, an in-page meeting summary appears and is saved locally. Chrome deliberately prevents extensions from opening their toolbar popup automatically, so the experience is delivered in the Meet tab instead.
 
+## Display modes
+
+**Gentle check-ins** is the default: the estimated total is revealed at 10-minute milestones rather than constantly rising. Users can switch to **Live total** or **End-only** in the extension settings.
+
 ## Privacy boundary (v0.1)
 
 Salary and work schedule are stored only in `chrome.storage.local`. No server calls are made. The overlay multiplies the participant estimate by the user's own local rate, so it is explicitly an **estimated meeting cost**.
