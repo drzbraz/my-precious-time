@@ -1,6 +1,6 @@
 (() => {
   const DEFAULTS = { currency: "EUR", annualSalary: 60000, hoursPerWeek: 40, weeksPerYear: 46, displayMode: "milestones", setupComplete: false };
-  let settings, startedAt, timer, lastParticipants = 1, lastSavedAt = 0;
+  let settings, startedAt, timer, lastParticipants = 1, lastSavedAt = 0, meetingFinished = false;
   const money = (value) => new Intl.NumberFormat(undefined, { style: "currency", currency: settings.currency, maximumFractionDigits: 2 }).format(value);
   const personalPerMinute = () => settings.annualSalary / (settings.hoursPerWeek * settings.weeksPerYear * 60);
   const duration = () => Math.max(0, Math.floor((Date.now() - startedAt) / 1000));
@@ -27,6 +27,13 @@
     // Meet still has live video but no join prompt. This covers localized Meet interfaces too.
     const joinPrompt = controls.some(el => /join now|ask to join|join meeting|participar agora|pedir para participar|entrar na reunião/i.test(`${el.getAttribute('aria-label') || ''} ${el.getAttribute('data-tooltip') || ''} ${el.textContent || ''}`));
     return document.querySelectorAll('video').length > 0 && !joinPrompt;
+  }
+  function meetingHasEnded() {
+    // Meet can end a call without a user pressing Leave (host ends it, removal, connection
+    // failure). These messages live in alerts, dialogs, and action buttons after the call.
+    const endPattern = /you left (?:the )?meeting|meeting (?:has )?ended|you (?:have )?been removed|return to home screen|rejoin(?: the meeting)?|connection (?:was )?lost/i;
+    const signals = [...document.querySelectorAll('[role="alert"], [role="dialog"], [aria-live], button, [role="button"]')];
+    return signals.some(el => endPattern.test(`${el.getAttribute('aria-label') || ''} ${el.getAttribute('data-tooltip') || ''} ${el.textContent || ''}`));
   }
   function render() {
     const root = document.getElementById("meeting-meter");
@@ -87,6 +94,12 @@
   }
   async function check() {
     if (!settings?.setupComplete) return;
+    if (timer && meetingHasEnded()) {
+      unmount();
+      meetingFinished = true;
+      return;
+    }
+    if (meetingFinished) return;
     mount(); // This confirms that the extension is loaded whenever meet.google.com is open.
     if (inMeeting()) {
       startMeeting();
