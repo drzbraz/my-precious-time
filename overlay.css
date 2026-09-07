@@ -1,2 +1,112 @@
-#meeting-meter{position:fixed;z-index:2147483647;right:20px;top:78px;width:236px;border:1px solid rgba(255,255,255,.14);border-radius:15px;padding:15px 15px 13px;background:rgba(17,31,27,.96);box-shadow:0 12px 36px rgba(0,0,0,.34);color:#f7fbf8;font-family:Inter,ui-sans-serif,system-ui,sans-serif;letter-spacing:0;user-select:none;transition:opacity .2s}#meeting-meter.mm-min{opacity:.4}#meeting-meter button{appearance:none;border:0;background:transparent;color:#9fafa8;cursor:pointer;font-size:16px;padding:0}#meeting-meter .mm-head{display:flex;align-items:center;justify-content:space-between;font-size:11px;color:#a9eac4;font-weight:750;letter-spacing:.45px;text-transform:uppercase}#meeting-meter .mm-live{width:7px;height:7px;background:#ff5c5c;border-radius:50%;display:inline-block;margin-right:6px;box-shadow:0 0 0 3px rgba(255,92,92,.14)}#meeting-meter .mm-time{color:#aab8b0;font-size:12px;margin-top:17px}#meeting-meter .mm-cost{font-size:30px;line-height:1.12;font-weight:760;letter-spacing:-1.1px;margin:2px 0 13px}#meeting-meter .mm-bottom{display:flex;align-items:center;justify-content:space-between;border-top:1px solid #33453c;padding-top:11px;color:#b9c7bf;font-size:12px}#meeting-meter .mm-rate{color:#75e4a3;font-weight:700}
-#meeting-meter-summary{position:fixed;z-index:2147483647;inset:0;display:grid;place-items:center;background:rgba(5,14,10,.55);font-family:Inter,ui-sans-serif,system-ui,sans-serif;color:#173126}#meeting-meter-summary .mms-card{position:relative;width:min(380px,calc(100vw - 36px));border-radius:18px;background:#fbfffc;padding:30px;box-shadow:0 20px 60px rgba(0,0,0,.35);text-align:center}#meeting-meter-summary .mms-close{position:absolute;right:15px;top:11px;border:0;background:transparent;color:#6d7e74;font-size:27px;line-height:1;cursor:pointer}#meeting-meter-summary .mms-eyebrow{color:#168951;font-size:10px;font-weight:800;letter-spacing:1.1px}#meeting-meter-summary h2{margin:10px auto 4px;max-width:265px;font-size:20px;line-height:1.2;letter-spacing:-.5px}#meeting-meter-summary .mms-total{font-size:37px;letter-spacing:-1.4px;color:#123d2e}#meeting-meter-summary .mms-stats{display:flex;justify-content:space-between;gap:8px;border-top:1px solid #e0eae4;margin-top:21px;padding-top:16px;color:#718078;font-size:10px}#meeting-meter-summary .mms-stats span{display:flex;flex-direction:column;gap:2px}#meeting-meter-summary .mms-stats b{color:#203c2f;font-size:13px}#meeting-meter-summary p{margin:20px 0 0;color:#718078;font-size:11px}
+#meeting-meter {
+  position: fixed;
+  z-index: 2147483647;
+  top: 16px;
+  right: 16px;
+  width: 188px;
+  padding: 10px 11px 9px;
+  border: 1px solid rgba(255, 255, 255, .16);
+  border-radius: 11px;
+  background: rgba(16, 33, 27, .88);
+  box-shadow: 0 7px 22px rgba(0, 0, 0, .18);
+  backdrop-filter: blur(12px);
+  color: #f7fbf8;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: 0;
+  user-select: none;
+}
+
+#meeting-meter button {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: #aebcb5;
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+  padding: 0 1px;
+}
+
+#meeting-meter .mm-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  color: #b4eccb;
+  font-size: 9px;
+  font-weight: 780;
+  letter-spacing: .45px;
+  text-transform: uppercase;
+}
+
+#meeting-meter .mm-live {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-right: 5px;
+  border-radius: 50%;
+  background: #fa8c8c;
+}
+
+#meeting-meter .mm-time {
+  margin-top: 7px;
+  color: #aebdb5;
+  font-size: 11px;
+}
+
+#meeting-meter .mm-cost {
+  margin: 2px 0 7px;
+  color: #f8fcf9;
+  font-size: 20px;
+  font-weight: 720;
+  letter-spacing: -.7px;
+}
+
+#meeting-meter .mm-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 7px;
+  border-top: 1px solid rgba(220, 238, 228, .16);
+  padding-top: 7px;
+  color: #aebdb5;
+  font-size: 10px;
+}
+
+#meeting-meter .mm-rate {
+  color: #83dbaa;
+  font-weight: 680;
+  text-align: right;
+}
+
+#meeting-meter .mm-people { white-space: nowrap; }
+
+#meeting-meter-summary {
+  position: fixed;
+  z-index: 2147483647;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(5, 14, 10, .55);
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  color: #173126;
+}
+
+#meeting-meter-summary .mms-card {
+  position: relative;
+  width: min(380px, calc(100vw - 36px));
+  border-radius: 18px;
+  background: #fbfffc;
+  padding: 30px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, .35);
+  text-align: center;
+}
+
+#meeting-meter-summary .mms-close { position: absolute; right: 15px; top: 11px; border: 0; background: transparent; color: #6d7e74; font-size: 27px; line-height: 1; cursor: pointer; }
+#meeting-meter-summary .mms-eyebrow { color: #168951; font-size: 10px; font-weight: 800; letter-spacing: 1.1px; }
+#meeting-meter-summary h2 { margin: 10px auto 4px; max-width: 265px; font-size: 20px; line-height: 1.2; letter-spacing: -.5px; }
+#meeting-meter-summary .mms-total { font-size: 37px; letter-spacing: -1.4px; color: #123d2e; }
+#meeting-meter-summary .mms-stats { display: flex; justify-content: space-between; gap: 8px; border-top: 1px solid #e0eae4; margin-top: 21px; padding-top: 16px; color: #718078; font-size: 10px; }
+#meeting-meter-summary .mms-stats span { display: flex; flex-direction: column; gap: 2px; }
+#meeting-meter-summary .mms-stats b { color: #203c2f; font-size: 13px; }
+#meeting-meter-summary p { margin: 20px 0 0; color: #718078; font-size: 11px; }

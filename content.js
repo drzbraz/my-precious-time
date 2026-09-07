@@ -1,6 +1,6 @@
 (() => {
   const DEFAULTS = { currency: "EUR", annualSalary: 60000, hoursPerWeek: 40, weeksPerYear: 46, displayMode: "milestones", setupComplete: false };
-  let settings, startedAt, timer, lastParticipants = 1, lastSavedAt = 0, meetingFinished = false;
+  let settings, startedAt, timer, lastParticipants = 1, lastSavedAt = 0, meetingFinished = false, dismissed = false;
   const money = (value) => new Intl.NumberFormat(undefined, { style: "currency", currency: settings.currency, maximumFractionDigits: 2 }).format(value);
   const personalPerMinute = () => settings.annualSalary / (settings.hoursPerWeek * settings.weeksPerYear * 60);
   const duration = () => Math.max(0, Math.floor((Date.now() - startedAt) / 1000));
@@ -59,10 +59,10 @@
     }
   }
   function mount() {
-    if (document.getElementById("meeting-meter")) return;
+    if (dismissed || document.getElementById("meeting-meter")) return;
     const root = document.createElement('aside'); root.id = 'meeting-meter';
-    root.innerHTML = `<div class="mm-head"><span class="mm-status"><i class="mm-live"></i>Precious Time is ready</span><button title="Dim meter" aria-label="Dim meter">−</button></div><div class="mm-time">Join a call to start the meter</div><div class="mm-cost">${money(0)}</div><div class="mm-bottom"><span class="mm-people">Private & local</span><span class="mm-rate">${money(personalPerMinute())} / min</span></div>`;
-    root.querySelector('button').addEventListener('click', () => root.classList.toggle('mm-min'));
+    root.innerHTML = `<div class="mm-head"><span class="mm-status"><i class="mm-live"></i>Precious Time is ready</span><button title="Hide for this meeting" aria-label="Hide for this meeting">×</button></div><div class="mm-time">Join a call to start the meter</div><div class="mm-cost">${money(0)}</div><div class="mm-bottom"><span class="mm-people">Private & local</span><span class="mm-rate">${money(personalPerMinute())} / min</span></div>`;
+    root.querySelector('button').addEventListener('click', () => { dismissed = true; root.remove(); });
     document.body.append(root);
   }
   function startMeeting() {
@@ -83,14 +83,14 @@
     document.body.append(modal);
   }
   function unmount(save = true) {
-    const root = document.getElementById('meeting-meter'); if (!root) return;
+    const root = document.getElementById('meeting-meter');
     if (save && duration() > 10 && Date.now() - lastSavedAt > 5000) {
       lastSavedAt = Date.now();
       const meeting = { id: crypto.randomUUID(), endedAt: new Date().toISOString(), durationSeconds: duration(), participantEstimate: lastParticipants, totalCost: cost(), currency: settings.currency };
       chrome.runtime.sendMessage({ type: 'saveMeeting', meeting });
       showSummary(meeting);
     }
-    root.remove(); clearInterval(timer); timer = null;
+    root?.remove(); clearInterval(timer); timer = null;
   }
   async function check() {
     if (!settings?.setupComplete) return;
