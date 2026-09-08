@@ -3,9 +3,32 @@
   "name": "Precious Time",
   "version": "0.1.0",
   "description": "A private, real-time meeting cost meter for Google Meet.",
-  "permissions": ["storage", "tabs"],
-  "host_permissions": ["https://meet.google.com/*"],
-  "action": { "default_title": "Precious Time", "default_popup": "popup.html" },
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxAuQZwgq7Cdkmo1BCHNL2XDbABHzGA7bc7CDxa8W9FBG4NpIwBqu20rNA9eVY0c4FW/NuDeFHKEN2IU7YAWy/tgDBauHYcy+cI9KBCJJLbynlt83aixb99jA1L5CckI87VLzxasS9ipkmYeBMbIDNGeiltGR9b9AgIr78TM5bYrEg0+0qoqGoHNkvUMcI22krHvhq5b+bl27g/F2IoxvEWjSf8/58lqlwcHTm7O4zSy+c46xP48Iq68FugyaGGbaa/3TzzPs5eJPrKiXmAfxzVIXpg+8aJb5hj+7XDDtKQjoMTL1oWuQ+mJpcEuQGuMzWRtHNLjrpieesHTwv4GhCwIDAQAB",
+  "permissions": ["storage", "identity"],
+  "host_permissions": ["https://meet.google.com/*", "https://www.googleapis.com/*"],
+  "oauth2": {
+    "client_id": "11649191724-bqbruorea2t2jq9gj13v0vu9p1u80l1m.apps.googleusercontent.com",
+    "scopes": [
+      "https://www.googleapis.com/auth/userinfo.email",
+      "https://www.googleapis.com/auth/userinfo.profile"
+    ]
+  },
+  "icons": {
+    "16": "public/icon16.png",
+    "32": "public/icon32.png",
+    "48": "public/icon48.png",
+    "128": "public/icon128.png"
+  },
+  "action": {
+    "default_title": "Precious Time",
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "public/icon16.png",
+      "32": "public/icon32.png",
+      "48": "public/icon48.png",
+      "128": "public/icon128.png"
+    }
+  },
   "background": { "service_worker": "service-worker.js", "type": "module" },
   "content_scripts": [{
     "matches": ["https://meet.google.com/*"],

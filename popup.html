@@ -4,13 +4,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="popup.css">
-    <link rel="stylesheet" href="modes.css">
     <title>Precious Time</title>
   </head>
   <body>
     <main>
       <header>
-        <div class="mark">m</div>
+        <img class="logo" src="public/icon32.png" width="32" height="32" alt="">
         <div><h1>Precious Time</h1><p>Time worth protecting</p></div>
       </header>
 
@@ -18,13 +17,10 @@
         <div class="eyebrow">YOUR PRIVATE RATE</div>
         <h2>Your time is precious.</h2>
         <p class="muted">Set your private rate and let the meter mind the minutes.</p>
-        <form id="settings-form">
+        <form id="settings-form" class="stack">
           <label>Annual salary <span class="input-wrap"><select id="currency" aria-label="Currency"><option value="EUR">€</option><option value="USD">$</option><option value="GBP">£</option></select><input id="annualSalary" inputmode="decimal" type="number" min="0" step="1000" required></span></label>
-          <div class="two-col">
-            <label>Hours / week<input id="hoursPerWeek" type="number" min="1" max="168" required></label>
-            <label>Weeks / year<input id="weeksPerYear" type="number" min="1" max="52" required></label>
-          </div>
-          <div class="rate-card"><span>Your hourly cost</span><strong id="hourly-rate">€0.00</strong></div>
+          <label>Hours / week<input id="hoursPerWeek" type="number" min="1" max="168" required></label>
+          <div class="stat stat--accent"><span>Your hourly cost</span><strong id="hourly-rate">€0.00</strong></div>
           <label>During a meeting
             <select id="displayMode">
               <option value="milestones">Gentle check-ins (every 10 minutes)</option>
@@ -33,7 +29,6 @@
             </select>
             <small>You can change this whenever you like.</small>
           </label>
-          <label>Team code <input id="teamCode" maxlength="24" placeholder="e.g. A7K9Q2"><small>Optional for the local MVP</small></label>
           <button type="submit">Save private settings</button>
         </form>
       </section>
@@ -42,11 +37,23 @@
         <div class="status"><span></span> Ready for Google Meet</div>
         <h2>Your meter is on</h2>
         <p class="muted">Join a Google Meet. We’ll keep an eye on the precious minutes.</p>
-        <div class="rate-card"><span>Your private rate</span><strong id="ready-rate">€0.00 / hr</strong></div>
-        <div class="mode-card"><span>During meetings</span><strong id="ready-mode">Gentle check-ins</strong></div>
-        <button id="edit-settings" class="secondary">Edit settings</button>
+        <div class="stack">
+          <div class="stat stat--accent"><span>Your private rate</span><strong id="ready-rate">€0.00 / hr</strong></div>
+          <div class="stat"><span>During meetings</span><strong id="ready-mode">Gentle check-ins</strong></div>
+          <div class="stat"><span class="stat-label"><i class="dot" id="account-dot"></i>Google account</span><strong id="account-status">Not connected</strong></div>
+          <button id="account-action" class="secondary">Connect Google account</button>
+          <p id="account-error" class="account-error" hidden></p>
+          <button id="edit-settings" class="secondary">Edit settings</button>
+        </div>
       </section>
-      <footer><span class="lock">⌁</span> Your salary stays yours, always</footer>
+
+      <footer>
+        <svg class="lock" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="4" y="11" width="16" height="9" rx="2"></rect>
+          <path d="M8 11V7a4 4 0 0 1 8 0v4"></path>
+        </svg>
+        Your salary stays yours, always
+      </footer>
     </main>
     <script src="popup.js"></script>
   </body>
