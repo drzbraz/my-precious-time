@@ -10,17 +10,10 @@ const DEFAULTS = {
   hoursPerWeek: 40,
   weeksPerYear: ASSUMED_WEEKS_PER_YEAR,
   teamCode: "",
-  displayMode: "milestones",
   setupComplete: false,
 };
 
-const DISPLAY_MODE_LABELS = {
-  milestones: "Gentle check-ins",
-  live: "Live total",
-  end: "End-only",
-};
-
-const SETTINGS_FIELDS = ["currency", "annualSalary", "hoursPerWeek", "displayMode"];
+const SETTINGS_FIELDS = ["currency", "annualSalary", "hoursPerWeek"];
 const RATE_INPUT_FIELDS = ["annualSalary", "hoursPerWeek", "currency"];
 
 function hourlyRate({ annualSalary, hoursPerWeek, weeksPerYear }) {
@@ -37,7 +30,6 @@ function readFormValues() {
     annualSalary: +$("annualSalary").value,
     hoursPerWeek: +$("hoursPerWeek").value,
     weeksPerYear: ASSUMED_WEEKS_PER_YEAR,
-    displayMode: $("displayMode").value,
   };
 }
 
@@ -53,7 +45,6 @@ function showView(setupComplete) {
 
   const values = readFormValues();
   $("ready-rate").textContent = `${formatMoney(hourlyRate(values), values.currency)} / hr`;
-  $("ready-mode").textContent = DISPLAY_MODE_LABELS[values.displayMode];
 }
 
 function sendMessage(message) {
@@ -121,12 +112,27 @@ async function renderAccountStatus() {
   $("account-dot").classList.toggle("dot--on", connected);
 }
 
+// Only shown when the active tab is actually a Meet call — a button that silently does nothing
+// on any other tab is worse than no button.
+async function initShowOverlayButton() {
+  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+  if (!tab?.id || !tab.url?.startsWith("https://meet.google.com/")) return;
+
+  const button = $("show-overlay");
+  button.hidden = false;
+  button.addEventListener("click", () => {
+    chrome.tabs.sendMessage(tab.id, { type: "showOverlay" });
+    window.close(); // Get out of the way so they can see it reappear.
+  });
+}
+
 async function init() {
   const settings = await chrome.storage.local.get(DEFAULTS);
   for (const field of SETTINGS_FIELDS) $(field).value = settings[field];
   renderRate();
   showView(settings.setupComplete);
   renderAccountStatus();
+  initShowOverlayButton();
 }
 
 RATE_INPUT_FIELDS.forEach((field) => $(field).addEventListener("input", renderRate));

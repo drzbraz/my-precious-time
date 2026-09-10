@@ -1,0 +1,16 @@
+name = "precious-time-backend"
+main = "src/index.js"
+compatibility_date = "2026-09-09"
+
+# Not secret — an OAuth client ID is meant to be public. Verifying a token's `aud` claim
+# against this just confirms the token was issued to *this* extension, not a random client.
+[vars]
+OAUTH_CLIENT_ID = "11649191724-bqbruorea2t2jq9gj13v0vu9p1u80l1m.apps.googleusercontent.com"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "precious-time"
+database_id = "601da03a-a506-44b4-8af9-3a44b98467f5"
+
+[triggers]
+crons = ["0 * * * *"]

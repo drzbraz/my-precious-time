@@ -3,3 +3,7 @@ node_modules/
 dist/
 *.crx
 *.pem
+backend/.env
+backend/.env.*
+backend/.dev.vars
+.wrangler/

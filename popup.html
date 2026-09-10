@@ -4,13 +4,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="popup.css">
-    <title>Precious Time</title>
+    <title>My Precious Time</title>
   </head>
   <body>
     <main>
       <header>
         <img class="logo" src="public/icon32.png" width="32" height="32" alt="">
-        <div><h1>Precious Time</h1><p>Time worth protecting</p></div>
+        <div><h1>My Precious Time</h1><p>Time worth protecting</p></div>
       </header>
 
       <section id="setup-view">
@@ -21,14 +21,6 @@
           <label>Annual salary <span class="input-wrap"><select id="currency" aria-label="Currency"><option value="EUR">€</option><option value="USD">$</option><option value="GBP">£</option></select><input id="annualSalary" inputmode="decimal" type="number" min="0" step="1000" required></span></label>
           <label>Hours / week<input id="hoursPerWeek" type="number" min="1" max="168" required></label>
           <div class="stat stat--accent"><span>Your hourly cost</span><strong id="hourly-rate">€0.00</strong></div>
-          <label>During a meeting
-            <select id="displayMode">
-              <option value="milestones">Gentle check-ins (every 10 minutes)</option>
-              <option value="live">Live total</option>
-              <option value="end">Show total when the meeting ends</option>
-            </select>
-            <small>You can change this whenever you like.</small>
-          </label>
           <button type="submit">Save private settings</button>
         </form>
       </section>
@@ -39,10 +31,10 @@
         <p class="muted">Join a Google Meet. We’ll keep an eye on the precious minutes.</p>
         <div class="stack">
           <div class="stat stat--accent"><span>Your private rate</span><strong id="ready-rate">€0.00 / hr</strong></div>
-          <div class="stat"><span>During meetings</span><strong id="ready-mode">Gentle check-ins</strong></div>
           <div class="stat"><span class="stat-label"><i class="dot" id="account-dot"></i>Google account</span><strong id="account-status">Not connected</strong></div>
           <button id="account-action" class="secondary">Connect Google account</button>
           <p id="account-error" class="account-error" hidden></p>
+          <button id="show-overlay" class="secondary" hidden>Show meter on this call</button>
           <button id="edit-settings" class="secondary">Edit settings</button>
         </div>
       </section>

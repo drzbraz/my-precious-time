@@ -8,6 +8,8 @@ const DEFAULTS = {
   meetings: []
 };
 
+const BACKEND_BASE_URL = "https://precious-time-backend.drz-braz.workers.dev";
+
 chrome.runtime.onInstalled.addListener(async () => {
   const stored = await chrome.storage.local.get(DEFAULTS);
   await chrome.storage.local.set(stored);
@@ -60,6 +62,36 @@ async function disconnectGoogleAccount() {
   await chrome.storage.local.remove("googleAccount");
 }
 
+// content.js can't safely make this fetch itself: it runs inside meet.google.com's page, subject
+// to that page's CSP, and there's no reliable way to test from here whether Meet's CSP would
+// block a cross-origin content-script fetch even with host_permissions granted. A service worker
+// has no such ambiguity — it's never subject to any page's CSP — so all backend calls live here.
+// interactive: false, always — this runs on a timer during a live meeting and must never pop
+// the account picker; "not connected" is a normal outcome, not an error.
+async function syncMeetingCost(meetingId, ratePerMinute) {
+  let token;
+  try {
+    token = await getAuthToken(false);
+  } catch {
+    // Distinguishable from a network/backend failure below — content.js treats "genuinely not
+    // connected" (drop to the local estimate immediately) differently from "one failed request"
+    // (keep showing the last known good total rather than flicker).
+    throw new Error("not_connected");
+  }
+
+  await fetch(`${BACKEND_BASE_URL}/v1/meetings/${meetingId}/presence`, {
+    method: "POST",
+    headers: { "content-type": "application/json", authorization: `Bearer ${token}` },
+    body: JSON.stringify({ ratePerMinute }),
+  });
+
+  const response = await fetch(`${BACKEND_BASE_URL}/v1/meetings/${meetingId}/aggregate`, {
+    headers: { authorization: `Bearer ${token}` },
+  });
+  if (!response.ok) throw new Error(`aggregate request failed: ${response.status}`);
+  return response.json(); // { participantCount, ratePerMinuteSum: number | null, asOf }
+}
+
 chrome.runtime.onMessage.addListener((message, _sender, respond) => {
   if (message.type === "saveMeeting") {
     chrome.storage.local.get({ meetings: [] }).then(({ meetings }) => {
@@ -77,6 +109,12 @@ chrome.runtime.onMessage.addListener((message, _sender, respond) => {
   if (message.type === "disconnectGoogle") {
     disconnectGoogleAccount()
       .then(() => respond({ ok: true }))
+      .catch((error) => respond({ ok: false, error: error?.message || String(error) }));
+    return true;
+  }
+  if (message.type === "syncMeetingCost") {
+    syncMeetingCost(message.meetingId, message.ratePerMinute)
+      .then((aggregate) => respond({ ok: true, aggregate }))
       .catch((error) => respond({ ok: false, error: error?.message || String(error) }));
     return true;
   }
