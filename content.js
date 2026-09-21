@@ -92,7 +92,18 @@
     const match = labels.map((label) => label?.match(PARTICIPANT_COUNT_PATTERN)).find(Boolean);
     if (match) return Math.max(1, Number(match[1]));
 
-    const tileCount = document.querySelectorAll("[data-participant-id], [data-self-name]").length;
+    // The local user's tile can expose data-self-name on a different (often nested) element than
+    // the one carrying data-participant-id, so naively counting every element matching either
+    // attribute double-counts yourself. Identify the self tile first via closest(), exclude it
+    // from the participant-id set, then add exactly one back for the local user.
+    const selfNameEl = document.querySelector("[data-self-name]");
+    const selfTile = selfNameEl?.closest("[data-participant-id]");
+    const otherIds = new Set(
+      [...document.querySelectorAll("[data-participant-id]")]
+        .filter((el) => el !== selfTile)
+        .map((el) => el.getAttribute("data-participant-id"))
+    );
+    const tileCount = otherIds.size + (selfNameEl ? 1 : 0);
     return tileCount || lastParticipants || 1;
   }
 

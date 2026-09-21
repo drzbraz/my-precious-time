@@ -126,10 +126,15 @@ async function initShowOverlayButton() {
   });
 }
 
-async function init() {
+async function loadSavedFormValues() {
   const settings = await chrome.storage.local.get(DEFAULTS);
   for (const field of SETTINGS_FIELDS) $(field).value = settings[field];
   renderRate();
+  return settings;
+}
+
+async function init() {
+  const settings = await loadSavedFormValues();
   showView(settings.setupComplete);
   renderAccountStatus();
   initShowOverlayButton();
@@ -143,7 +148,19 @@ $("settings-form").addEventListener("submit", async (event) => {
   showView(true);
 });
 
-$("edit-settings").addEventListener("click", () => showView(false));
+// Only meaningful once there's a saved state to return to — first-time setup has no ready view
+// yet, so the button stays hidden until "Edit settings" reveals it.
+$("edit-settings").addEventListener("click", () => {
+  $("cancel-edit").hidden = false;
+  showView(false);
+});
+
+$("cancel-edit").addEventListener("click", async () => {
+  // Discard any unsaved edits in the form before returning, so the ready view reflects what's
+  // actually stored, not whatever the user was mid-typing.
+  await loadSavedFormValues();
+  showView(true);
+});
 
 chrome.storage.onChanged.addListener((changes, area) => {
   if (area === "local" && "googleAccount" in changes) renderAccountStatus();
