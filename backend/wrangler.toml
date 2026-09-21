@@ -5,7 +5,7 @@ compatibility_date = "2026-09-09"
 # Not secret — an OAuth client ID is meant to be public. Verifying a token's `aud` claim
 # against this just confirms the token was issued to *this* extension, not a random client.
 [vars]
-OAUTH_CLIENT_ID = "11649191724-bqbruorea2t2jq9gj13v0vu9p1u80l1m.apps.googleusercontent.com"
+OAUTH_CLIENT_ID = "329680931594-vsheq7o55regtk3r4475s2pvk1gl43eh.apps.googleusercontent.com"
 
 [[d1_databases]]
 binding = "DB"
