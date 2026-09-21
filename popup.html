@@ -21,6 +21,7 @@
           <label>Annual salary <span class="input-wrap"><select id="currency" aria-label="Currency"><option value="EUR">€</option><option value="USD">$</option><option value="GBP">£</option></select><input id="annualSalary" inputmode="decimal" type="number" min="0" step="1000" required></span></label>
           <label>Hours / week<input id="hoursPerWeek" type="number" min="1" max="168" required></label>
           <div class="stat stat--accent"><span>Your hourly cost</span><strong id="hourly-rate">€0.00</strong></div>
+          <div class="stat"><span>Show meter during the call</span><input type="checkbox" id="showLiveMeter" checked></div>
           <button type="submit">Save private settings</button>
           <button type="button" id="cancel-edit" class="secondary" hidden>Back</button>
         </form>

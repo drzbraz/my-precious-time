@@ -5,6 +5,7 @@
     hoursPerWeek: 40,
     weeksPerYear: 46,
     setupComplete: false,
+    showLiveMeter: true,
     overlayPosition: null, // {top, left} in px once the user has dragged it; null = default corner.
   };
 
@@ -256,7 +257,10 @@
   }
 
   function mount() {
-    if (dismissed || document.getElementById("meeting-meter")) return;
+    // showLiveMeter off means the end-of-meeting summary (showSummary/saveMeetingIfNeeded,
+    // unaffected by this flag) is the only place cost is revealed — same "quiet by choice"
+    // spirit as the eye toggle, just for the whole overlay instead of only the number.
+    if (dismissed || !settings.showLiveMeter || document.getElementById("meeting-meter")) return;
 
     const root = document.createElement("aside");
     root.id = "meeting-meter";
@@ -393,6 +397,9 @@
   chrome.runtime.onMessage.addListener((message, _sender, respond) => {
     if (message.type === "showOverlay") {
       dismissed = false;
+      // In-memory only, same lifecycle as `dismissed` — doesn't touch the stored setting, just
+      // lets this one click override it for the rest of this tab's session.
+      settings.showLiveMeter = true;
       mount();
       respond({ ok: true });
     }

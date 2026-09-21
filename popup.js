@@ -10,6 +10,7 @@ const DEFAULTS = {
   hoursPerWeek: 40,
   weeksPerYear: ASSUMED_WEEKS_PER_YEAR,
   teamCode: "",
+  showLiveMeter: true,
   setupComplete: false,
 };
 
@@ -30,6 +31,7 @@ function readFormValues() {
     annualSalary: +$("annualSalary").value,
     hoursPerWeek: +$("hoursPerWeek").value,
     weeksPerYear: ASSUMED_WEEKS_PER_YEAR,
+    showLiveMeter: $("showLiveMeter").checked,
   };
 }
 
@@ -129,6 +131,7 @@ async function initShowOverlayButton() {
 async function loadSavedFormValues() {
   const settings = await chrome.storage.local.get(DEFAULTS);
   for (const field of SETTINGS_FIELDS) $(field).value = settings[field];
+  $("showLiveMeter").checked = settings.showLiveMeter;
   renderRate();
   return settings;
 }
