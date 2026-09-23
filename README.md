@@ -2,6 +2,14 @@
 
 A Manifest V3 Chrome extension for a privacy-first Google Meet cost meter.
 
+
+
+<img width="357" height="575" alt="Screenshot 2026-09-23 at 11 17 16" src="https://github.com/user-attachments/assets/e8f9f46c-49cf-457f-93da-412a4564689d" />
+
+<img width="525" height="332" alt="Screenshot 2026-09-23 at 11 17 44" src="https://github.com/user-attachments/assets/4ee2ecfd-8776-4e0d-ba53-a961b047255c" />
+
+
+
 ## Run it
 
 1. Open `chrome://extensions`, enable **Developer mode**, and choose **Load unpacked**.
